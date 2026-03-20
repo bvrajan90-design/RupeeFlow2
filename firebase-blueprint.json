@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user-specific information and preferences.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique identifier for the user." },
+        "displayName": { "type": "string", "description": "The user's full name." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "photoURL": { "type": "string", "description": "URL to the user's profile picture." },
+        "currency": { "type": "string", "description": "The user's preferred currency symbol." },
+        "isDarkMode": { "type": "boolean", "description": "User's dark mode preference." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created." }
+      },
+      "required": ["uid", "email"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A financial transaction (income or expense).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string", "description": "The owner of the transaction." },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["income", "expense"] },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "amount", "type", "category", "date"]
+    },
+    "Goal": {
+      "title": "Savings Goal",
+      "description": "A goal the user is saving towards.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "targetAmount": { "type": "number" },
+        "currentAmount": { "type": "number" },
+        "color": { "type": "string" }
+      },
+      "required": ["uid", "name", "targetAmount", "currentAmount"]
+    },
+    "Budget": {
+      "title": "Budget",
+      "description": "Monthly budget limit for a specific category.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "limit": { "type": "number" }
+      },
+      "required": ["uid", "categoryId", "limit"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "User profile documents."
+    },
+    "/users/{uid}/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "User's financial transactions."
+    },
+    "/users/{uid}/goals/{goalId}": {
+      "schema": "Goal",
+      "description": "User's savings goals."
+    },
+    "/users/{uid}/budgets/{categoryId}": {
+      "schema": "Budget",
+      "description": "User's category-specific budgets."
+    }
+  }
+}
